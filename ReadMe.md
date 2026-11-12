@@ -8,4 +8,4 @@ Menu has 4 commnand:
 - Exit
 # Commands for executing programm
 javac --release 11 -d out src/*.java
-javac --release 11 -d out src/*.java 
+java -cp out Main
