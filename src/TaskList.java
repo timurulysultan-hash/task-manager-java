@@ -28,7 +28,17 @@ public class TaskList {
             }
         }
     }
+    public boolean isTaskComplete(String taskName){
+        for(Task task : tasks){
+            if (task.getTaskName().equals(taskName)){
+                if (task.isFinished()){
+                    return true;
+                }
+            }
 
+        }
+        return false;
+    }
     public boolean setTaskCompleted(String taskName){
         for(Task task : tasks){
             if (task.getTaskName().equals(taskName)){

@@ -5,12 +5,12 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static final String FileName = "tasks.txt";
+    static final String FILE_NAME = "tasks.txt";
     public static void main(String[] args) {
         TaskList taskList = new TaskList();
         TaskFileReaderWriter taskFileReaderWriter = new TaskFileReaderWriter();
         try {
-            ArrayList<Task> tasksFromFile = taskFileReaderWriter.readTasksFromFile(FileName);
+            ArrayList<Task> tasksFromFile = taskFileReaderWriter.readTasksFromFile(FILE_NAME);
             for (Task task : tasksFromFile) {
                 taskList.addTask(task);
             }
@@ -41,7 +41,7 @@ public class Main {
                         boolean taskAddedOrNot = taskList.addTask(new Task(taskName));
                         if (taskAddedOrNot) {
                             System.out.println("Added task: " + taskName);
-                            writeToFile(taskList.getTasks(),FileName,taskFileReaderWriter);
+                            writeToFile(taskList.getTasks(),FILE_NAME,taskFileReaderWriter);
                         } else {
                             System.out.println("Task already exists: " + taskName);
                         }
@@ -54,10 +54,7 @@ public class Main {
                         System.out.println("Invalid task name");
                     } else {
                     if (completeTask(taskName, taskList)){
-                        System.out.println("Task completed successfully");
-                        writeToFile(taskList.getTasks(),FileName,taskFileReaderWriter);
-                    } else  {
-                        System.out.println("Task already completed");
+                        writeToFile(taskList.getTasks(),FILE_NAME,taskFileReaderWriter);
                     }
                     }
                     break;}
@@ -72,11 +69,18 @@ public class Main {
         }
     }
     static boolean completeTask(String taskName,TaskList taskList){
-        if (taskList.setTaskCompleted(taskName)){
-            System.out.println("Task completed successfully");
-            return true;
+        if (!taskList.taskExists(taskName)) {
+            System.out.println("Task not found: " + taskName);
+            return false;
         }
-        return false;
+        if (taskList.isTaskComplete(taskName)){
+            System.out.println("Task already completed: " + taskName);
+            return false;
+        }
+        taskList.setTaskCompleted(taskName);
+        System.out.println("Task completed successfully");
+        return true;
+
     }
     static boolean taskNameIsBlank(String taskName){
         return taskName.isBlank();
